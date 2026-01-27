@@ -1,0 +1,174 @@
+body {
+  font-family: 'Inter', Arial, sans-serif;
+  background-color: #f9f9fb;
+  margin: 0;
+  padding: 2rem;
+  color: #1e1e2f;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.app-title {
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.8rem;
+  margin-bottom: 2rem;
+  color: #1e1e2f;
+}
+
+.currency-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.currency-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.currency-field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.currency-field label {
+  font-weight: 500;
+  font-size: 0.95rem;
+  margin-bottom: 0.3rem;
+  color: #444;
+}
+
+.currency-field select,
+.currency-field input {
+  padding: 0.65rem 0.85rem;
+  border: 1px solid #c1c5ca;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #222;
+  background: #fff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.currency-field select:focus,
+.currency-field input:focus {
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+  outline: none;
+}
+
+.action {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.action button {
+  font-size: 1.2rem;
+  cursor: pointer;
+  border-radius: 6px;
+  border: none;
+  background-color: #4f46e5;
+  color: #fff;
+  padding: 0;
+  width: 3rem;
+  height: 2.35rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s, transform 0.15s;
+}
+
+.action button:hover {
+  background-color: #4338ca;
+  transform: scale(1.05);
+}
+
+.current-rate {
+  font-size: 0.9rem;
+  color: #555;
+  margin-top: 0.3rem;
+  min-height: 1.2rem;
+}
+
+.date-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.date-picker label {
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: #444;
+}
+
+.date-picker input {
+  padding: 0.65rem 0.85rem;
+  border: 1px solid #c1c5ca;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #fff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.date-picker input:focus {
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+}
+
+@media (max-width: 620px) {
+  .currency-row {
+    flex-direction: column;
+  }
+
+  .currency-field,
+  .date-picker {
+    width: 100%;
+  }
+
+  .action button {
+    width: 100%;
+    height: auto;
+  }
+}
+
+.date-picker-input {
+  padding: 0.65rem 0.85rem;
+  border: 1px solid #c1c5ca;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #222;
+  background: #fff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.date-picker-input:focus {
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+  outline: none;
+}
+
+.date-picker {
+  margin-top: 1rem;
+}
