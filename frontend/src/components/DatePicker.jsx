@@ -2,6 +2,7 @@ import React from 'react';
 
 function DatePicker({ value, onChange }) {
   const formatDate = (date) => date.toISOString().split('T')[0];
+  const today = formatDate(new Date());
 
   const handleChange = (e) => {
     const selectedDate = new Date(e.target.value);
@@ -14,6 +15,7 @@ function DatePicker({ value, onChange }) {
     <input
       type="date"
       value={formatDate(value)}
+      max={today}
       onChange={handleChange}
       className="date-picker-input"
     />
