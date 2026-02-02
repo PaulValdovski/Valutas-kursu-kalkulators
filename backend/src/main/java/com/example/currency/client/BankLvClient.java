@@ -34,7 +34,6 @@ public class BankLvClient {
             }
 
             Map<String, Double> onlineRates = xmlParser.parse(xmlResponse);
-            onlineRates.putIfAbsent("EUR", 1.0); 
 
             return onlineRates;
         } catch (Exception e) {

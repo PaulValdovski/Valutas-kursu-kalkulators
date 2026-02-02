@@ -15,13 +15,6 @@ public class RateService {
         this.bankLvClient = bankLvClient;
     }
 
-    public double getRate(String from, String to, LocalDate date) {
-        Map<String, Double> rates = bankLvClient.fetchRates(date);
-        double fromRate = rates.get(from);
-        double toRate = rates.get(to);
-        return toRate / fromRate;
-    }
-
     public Map<String, Double> getRates(LocalDate date) {
         if (date.isAfter(LocalDate.now())) {
             throw new IllegalArgumentException("Date cannot be in the future");
