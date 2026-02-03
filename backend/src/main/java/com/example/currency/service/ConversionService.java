@@ -9,8 +9,15 @@ import java.util.Map;
 @Service
 public class ConversionService {
 
-    public ConversionResult convert(double amount, String fromCurrency, String toCurrency,
-                                    LocalDate rateDate, Map<String, Double> rates) {
+    public ConversionResult convert(double amount,
+                                    String fromCurrency,
+                                    String toCurrency,
+                                    LocalDate rateDate,
+                                    Map<String, Double> rates) {
+
+        if (rates == null || rates.isEmpty()) {
+            throw new IllegalArgumentException("Currency not available for the given date");
+        }
 
         Double fromRate = rates.get(fromCurrency);
         Double toRate = rates.get(toCurrency);

@@ -1,43 +1,41 @@
 package com.example.currency.client;
 
-import com.example.currency.util.XmlParser;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
+
+import com.example.currency.client.interfaces.HttpClient;
+import com.example.currency.client.interfaces.RateClient;
+import com.example.currency.util.XmlParser;
 
 import java.time.LocalDate;
 import java.util.Map;
 
 @Component
-public class BankLvClient {
+public class BankLvClient implements RateClient {
 
-    private static final String BASE_URL = "https://www.bank.lv/vk/ecb.xml";
-    private final RestTemplate restTemplate;
     private final XmlParser xmlParser;
+    private final HttpClient httpClient;
 
-    public BankLvClient(XmlParser xmlParser) {
-        this.restTemplate = new RestTemplate();
+    public BankLvClient(XmlParser xmlParser, HttpClient httpClient) {
         this.xmlParser = xmlParser;
+        this.httpClient = httpClient;
     }
 
+    @Override
     public Map<String, Double> fetchRates(LocalDate date) {
-
-        try {
-            String url = BASE_URL;
-            if (date != null) {
-                url += "?date=" + date.format(java.time.format.DateTimeFormatter.BASIC_ISO_DATE);
-            }
-
-            String xmlResponse = restTemplate.getForObject(url, String.class);
-
-            if (xmlResponse == null || xmlResponse.isEmpty()) {
-                throw new RuntimeException("Bank.lv returned empty response");
-            }
-
-            Map<String, Double> onlineRates = xmlParser.parse(xmlResponse);
-
-            return onlineRates;
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to fetch rates from Bank.lv: " + e.getMessage(), e);
+        String url = "https://www.bank.lv/vk/ecb.xml";
+        
+        if (date != null) {
+            url += "?date=" + date.format(java.time.format.DateTimeFormatter.BASIC_ISO_DATE);
         }
+
+        String xmlResponse = httpClient.get(url);
+
+        if (xmlResponse == null || xmlResponse.isEmpty()) {
+            throw new RuntimeException("Bank.lv returned empty response");
+        }
+
+        Map<String, Double> rates = xmlParser.parse(xmlResponse);
+
+        return rates;
     }
 }

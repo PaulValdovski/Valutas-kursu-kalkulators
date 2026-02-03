@@ -32,7 +32,6 @@ class ConversionServiceTest {
         assertEquals(LocalDate.of(2026, 2, 2), result.getRateDate());
     }
 
-
     @Test
     void testConvert_SameCurrency() {
         Map<String, Double> rates = Map.of("EUR", 1.0);
@@ -73,5 +72,43 @@ class ConversionServiceTest {
         ConversionResult result = conversionService.convert(0, "EUR", "USD", LocalDate.now(), rates);
 
         assertEquals(0, result.getConvertedAmount());
+    }
+
+    @Test
+    void testConvert_NegativeAmount() {
+        Map<String, Double> rates = Map.of("EUR", 1.0, "USD", 1.1);
+
+        ConversionResult result = conversionService.convert(-50, "EUR", "USD", LocalDate.now(), rates);
+
+        assertEquals(-55.0, result.getConvertedAmount(), 0.0001);
+    }
+
+    @Test
+    void testConvert_HistoricalDate() {
+        Map<String, Double> rates = Map.of("EUR", 1.0, "USD", 1.2);
+
+        LocalDate historicalDate = LocalDate.of(2005, 3, 23);
+
+        ConversionResult result = conversionService.convert(200, "EUR", "USD", historicalDate, rates);
+
+        assertEquals(240.0, result.getConvertedAmount(), 0.0001);
+        assertEquals(historicalDate, result.getRateDate());
+    }
+
+    @Test
+    void testConvert_INRToAUD() {
+        Map<String, Double> rates = Map.of(
+                "INR", 1.0,
+                "AUD", 0.018 
+        );
+
+        ConversionResult result = conversionService.convert(
+                5000, "INR", "AUD", LocalDate.of(2026, 2, 3), rates
+        );
+
+        assertEquals(90.0, result.getConvertedAmount(), 0.0001);
+        assertEquals("INR", result.getFromCurrency());
+        assertEquals("AUD", result.getToCurrency());
+        assertEquals(LocalDate.of(2026, 2, 3), result.getRateDate());
     }
 }
