@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "react-select": "^5.10.2",
+    "react-sparklines": "^1.7.0"
+  }
+}

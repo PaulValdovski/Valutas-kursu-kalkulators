@@ -24,3 +24,30 @@ export async function convertCurrency(from, to, amount, date) {
     return null;
   }
 }
+
+export async function getCurrencyHistory(from, to, days = 30) {
+  if (!from || !to || days <= 0) {
+    console.error('Invalid parameters for history:', { from, to, days });
+    return null;
+  }
+
+  try {
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080/api';
+    const url = `${apiUrl}/history?from=${from}&to=${to}&days=${days}`;
+
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(`Backend returned ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    console.log('[getCurrencyHistory] Fetched data:', data);
+    return data;
+
+  } catch (err) {
+    console.error('Error fetching historical rates:', err);
+    return null;
+  }
+}
