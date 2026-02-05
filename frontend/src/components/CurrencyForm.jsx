@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react"; 
+import React, { useState, useEffect, useRef } from "react";
 import DatePicker from "./DatePicker.jsx";
 import { convertCurrency } from "../services/api.js";
 import CurrencyHistoryChart from "./CurrencyHistoryChart.jsx";
@@ -55,11 +55,13 @@ function Dropdown({ options, value, onChange }) {
   return (
     <div className="custom-dropdown" ref={ref}>
       <div
-        className="currency-field select-like"
+        className="currency-field select-like dropdown-trigger"
         onClick={() => setOpen(!open)}
       >
         {selected ? selected.code : "Select..."}
+        <span className={`dropdown-arrow ${open ? "open" : ""}`}>▾</span>
       </div>
+
 
       {open && (
         <ul className="dropdown-list">
@@ -89,6 +91,7 @@ function CurrencyForm({ setConversionResult }) {
   const [date, setDate] = useState(new Date());
   const [result, setResult] = useState("");
   const [rate, setRate] = useState(null);
+  const [copied, setCopied] = useState(false);
 
   const handleSwap = () => {
     setFrom(to);
@@ -133,8 +136,7 @@ function CurrencyForm({ setConversionResult }) {
           setResult("Kļūda");
           setRate(null);
         }
-      } catch (err) {
-        console.error(err);
+      } catch {
         setResult("Kļūda");
         setRate(null);
       }
@@ -156,9 +158,9 @@ function CurrencyForm({ setConversionResult }) {
               type="text"
               value={amount}
               onChange={(e) => {
-                let sanitizedValue = e.target.value.replace(/^0+(?=\d)/, "");
-                if (sanitizedValue === "") sanitizedValue = "0";
-                setAmount(sanitizedValue);
+                let v = e.target.value.replace(/^0+(?=\d)/, "");
+                if (v === "") v = "0";
+                setAmount(v);
               }}
             />
             <div className="current-rate">
@@ -173,12 +175,27 @@ function CurrencyForm({ setConversionResult }) {
           <div className="currency-field">
             <label>Pirkt:</label>
             <Dropdown options={CURRENCIES} value={to} onChange={setTo} />
-            <input
-              type="text"
-              value={result}
-              readOnly
-              placeholder="Ievadiet daudzumu, ko pārdot"
-            />
+            <div className="copy-wrapper">
+              <input
+                type="text"
+                value={result}
+                readOnly
+                placeholder="Ievadiet daudzumu, ko pārdot"
+              />
+              {result && (
+                <button
+                  type="button"
+                  className="copy-btn"
+                  onClick={() => {
+                    navigator.clipboard.writeText(result);
+                    setCopied(true);
+                    setTimeout(() => setCopied(false), 1500);
+                  }}
+                >
+                   🗎
+                </button>
+              )}
+            </div>
             <div className="current-rate">
               {inverseRate ? `Pārdod: 1 ${to} = ${inverseRate} ${from}` : "\u00A0"}
             </div>
@@ -192,8 +209,13 @@ function CurrencyForm({ setConversionResult }) {
           </div>
           <CurrencyHistoryChart from={from} to={to} />
         </div>
-
       </form>
+
+      {copied && (
+        <div className="copy-toast">
+          Vērtība nokopēta
+        </div>
+      )}
     </div>
   );
 }
